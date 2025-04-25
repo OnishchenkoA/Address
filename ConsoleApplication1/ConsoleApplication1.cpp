@@ -23,6 +23,14 @@ public:
 		this->apart = apart;
 	}
 
+	address()
+	{
+		std::string town;
+		std::string strit;
+		int house = 0;
+		int apart = 0;
+	}
+
 	std::string get_output_address()
 	{
 		output_adress = town + " , " + strit + " , " + std::to_string(house) + " , " + std::to_string(apart);
@@ -36,21 +44,21 @@ public:
 		return addr;
 	}
 
-	void del(std::string* addr, int N)
+	void del(address* addr, int N)
 	{
 		delete[]addr;
 		addr = NULL;
 	}
 
-	void out_adr(std::string* addr, int N)
+	void out_adr(address* addr, int N)
 	{
 		std::ofstream adr1("out.txt");
 		if (adr1.is_open())
 		{
 			adr1 << N << std::endl;
-			for (int i = N; i > 0; i--)
+			for (int i = N - 1; i >= 0; i--)
 			{
-				adr1 << addr[i] << std::endl;
+				adr1 << addr[i].get_output_address() << std::endl;
 			
 			}
 		}
@@ -60,23 +68,21 @@ public:
 		adr1.close();
 };
 
-int main(int argc, char** argv)
-{
-	setlocale(LC_ALL, "russian");
-	std::string town;
-	std::string strit;
-	int house = 0;
-	int apart = 0;
-	address adr2(town, strit, house, apart);
-	std::ifstream adr("in.txt");
-	int N = 0;
-	adr >> N;
-	std::string* addr = mass_addr(N);
-	for (int i = 1; i <= N; i++)
+	int main(int argc, char** argv)
+	{
+		setlocale(LC_ALL, "russian");
+		std::string town;
+		std::string strit;
+		int house = 0;
+		int apart = 0;
+		std::ifstream adr("in.txt");
+		int N = 0;
+		adr >> N;
+		address* addr = new address[N];
+	for (int i = 0; i < N; i++)
 	{
 		adr >> town >> strit >> house >> apart;
-		addr[i] = addr[town, strit, house, apart];
-		addr[i] = adr2.get_output_address();
+		addr[i] = address(town, strit, house, apart);
 	}
 	adr.close();
 	out_adr(addr, N);
